@@ -1,12 +1,13 @@
 package kr.ac.kopo.menutest1;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -17,8 +18,10 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
     LinearLayout linear;
-    Button btn;
-    int rotationDegree;
+    EditText editDegree;
+    ImageView imageView;
+    float inputDegree;
+    float currentDegree;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +34,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         linear = findViewById(R.id.main);
-        btn = findViewById(R.id.btn);
+        editDegree = findViewById(R.id.editDegree);
+        imageView = findViewById(R.id.imageView);
     }
 
     @Override
@@ -45,23 +49,32 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item){
         super.onOptionsItemSelected(item);
-        if(item.getItemId() == R.id.item_yellow){
-            linear.setBackgroundColor(Color.YELLOW);
+
+        int id = item.getItemId();
+
+        if (id == R.id.item_rotate) {
+            String degreeStr = editDegree.getText().toString();
+            if (!degreeStr.isEmpty()) {
+                currentDegree += Float.parseFloat(degreeStr);
+                imageView.setRotation(currentDegree);
+            } else {
+                Toast.makeText(getApplicationContext(), "각도를 먼저 입력하세요", Toast.LENGTH_SHORT).show();
+            }
             return true;
-        }else if(item.getItemId() == R.id.item_pink){
-            linear.setBackgroundColor(Color.MAGENTA);
+        } else if (id == R.id.item_img01) {
+            item.setChecked(true);
+            imageView.setImageResource(R.drawable.img01);
             return true;
-        }else if(item.getItemId() == R.id.item_blue) {
-            linear.setBackgroundColor(Color.BLUE);
+        } else if (id == R.id.item_img02) {
+            item.setChecked(true);
+            imageView.setImageResource(R.drawable.img02);
             return true;
-        }else if(item.getItemId() == R.id.btn_rotate) {
-            rotationDegree += 45;
-            btn.setRotation(rotationDegree);
-            return true;
-        }else if(item.getItemId() == R.id.btn_zoomin){
-            btn.setScaleX(2);
+        } else if (id == R.id.item_img03) {
+            item.setChecked(true);
+            imageView.setImageResource(R.drawable.img03);
             return true;
         }
+
         return false;
     }
 }
